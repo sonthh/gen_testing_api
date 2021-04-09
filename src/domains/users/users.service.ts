@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ConfigService } from '../../configs/configs.service';
-import { GetCurrentUserCredentials, User } from './types/users.interface';
+import {
+  User,
+  GetCurrentUserCredentials,
+  CreateOneService,
+} from './types/users.interface';
 
 @Injectable()
 export class UsersService {
@@ -19,6 +23,16 @@ export class UsersService {
       const user: any = await this.usersModel.findOne(query);
 
       return user;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async createOne({ user }: CreateOneService): Promise<User> {
+    try {
+      const createUserData = await this.usersModel.create(user);
+
+      return createUserData;
     } catch (error) {
       return Promise.reject(error);
     }

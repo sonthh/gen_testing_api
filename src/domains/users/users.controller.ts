@@ -11,6 +11,7 @@ export class UsersController {
 
   @Post('auth/login')
   @UseGuards(AuthGuard('local'))
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async login(@Request() { user }, @Body() _: LoginDto) {
     try {
@@ -19,4 +20,18 @@ export class UsersController {
       console.log(error);
     }
   }
+
+  @Post('create')
+  @UseGuards(AuthGuard('local'))
+  async createOne(@Request() { user }, @Body() createOneDto: any) {
+    try {
+      return user;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // todo
+  // @UseGuards(Authz('ADMIN')) check scope
+  // finding query
 }

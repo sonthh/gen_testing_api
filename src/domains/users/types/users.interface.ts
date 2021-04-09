@@ -18,3 +18,18 @@ export interface GetCurrentUserCredentials {
   username?: string;
   _id?: Types.ObjectId;
 }
+
+export interface CreateOneUser {
+  username: string;
+  fullname: string;
+  email: string;
+  phoneNumber?: string;
+  password: string;
+  profilePhoto?: string;
+  status?: string;
+  role?: string;
+}
+
+export interface CreateOneService {
+  user: CreateOneUser;
+}
