@@ -34,3 +34,22 @@ export interface CreateOneService {
   createOneUser: CreateOneUser;
   user: User;
 }
+
+export interface FindManyQuery {
+  sortBy?: string;
+  sortDirection?: string;
+  limit?: string;
+  role?: string;
+  fullname?: string;
+  cursor?: string;
+}
+
+export interface FindManyService {
+  query: FindManyQuery;
+}
+
+export interface FindManyUserResponse {
+  total: number;
+  list: User[];
+  cursor: string;
+}

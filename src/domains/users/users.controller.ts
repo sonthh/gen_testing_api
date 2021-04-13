@@ -5,15 +5,17 @@ import {
   Body,
   UseGuards,
   UsePipes,
+  Get,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
-import { LoginDto } from './types/users.dto';
+import { FindManyDto, LoginDto } from './models/users.dto';
 import { AuthService } from '../../middlewares/auth/auth.service';
 import { Scopes } from 'src/middlewares/authz/authz.service';
 import { CreateUserDto } from './models/users.dto';
 import { UsersService } from './users.service';
-import { User } from './types/users.interface';
+import { FindManyUserResponse, User } from './types/users.interface';
 import { ValidationPipe } from 'src/middlewares/pipes/validation.pipe';
 import { MyLogger } from '../logger/logger.service';
 import { checkControllerErrors } from 'src/helpers/check_errors';
@@ -59,6 +61,25 @@ export class UsersController {
       });
 
       return newUser;
+    } catch (error) {
+      this.logger.error(`${error.code}:${error.name}:${error.stack}`);
+      checkControllerErrors(error);
+    }
+  }
+
+  @Get('users')
+  @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
+  @UseGuards(AuthGuard('jwt'))
+  @UsePipes(new ValidationPipe())
+  async findMany(
+    @Query() findManyDto: FindManyDto,
+  ): Promise<FindManyUserResponse> {
+    try {
+      const users = await this.usersService.findMany({
+        query: { ...findManyDto },
+      });
+
+      return users;
     } catch (error) {
       this.logger.error(`${error.code}:${error.name}:${error.stack}`);
       checkControllerErrors(error);

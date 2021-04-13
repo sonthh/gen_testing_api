@@ -6,8 +6,15 @@ import {
   User,
   GetCurrentUserCredentials,
   CreateOneService,
+  FindManyService,
+  FindManyUserResponse,
 } from './types/users.interface';
 import * as bcrypt from 'bcrypt';
+import {
+  buildFindingQuery,
+  buildFindingQueryByObject,
+  buildRegexQuery,
+} from 'src/helpers/build';
 
 @Injectable()
 export class UsersService {
@@ -52,4 +59,66 @@ export class UsersService {
     }
   }
 
+  async findMany({ query }: FindManyService): Promise<FindManyUserResponse> {
+    try {
+      let newQuery: any = { ...query };
+      const { limit } = query;
+      const promises = [];
+
+      newQuery = buildFindingQueryByObject({
+        query: newQuery,
+        objectKeys: {
+          ids: '_id',
+        },
+      });
+
+      newQuery = buildRegexQuery({
+        query: newQuery,
+        regexFields: ['name'],
+      });
+
+      const {
+        sortingCondition,
+        findingQuery,
+        findAllQuery,
+        hasPage,
+      } = buildFindingQuery({ query: newQuery });
+
+      if (hasPage) {
+        promises.push(
+          this.usersModel
+            .find(findingQuery)
+            .sort(sortingCondition)
+            .limit(Number(limit))
+            .populate({ path: 'createdBy' }),
+          this.usersModel.countDocuments(findAllQuery),
+        );
+      }
+
+      if (!hasPage) {
+        promises.push(
+          this.usersModel.find(findAllQuery).populate({ path: 'createdBy' }),
+          this.usersModel.countDocuments(findAllQuery),
+        );
+      }
+
+      const [users, total] = await Promise.all(promises);
+
+      if (!users || !users.length) {
+        return {
+          total: 0,
+          list: [],
+          cursor: null,
+        };
+      }
+
+      return {
+        total,
+        list: users,
+        cursor: null,
+      };
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
 }
