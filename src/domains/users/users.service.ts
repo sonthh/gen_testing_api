@@ -7,6 +7,7 @@ import {
   GetCurrentUserCredentials,
   CreateOneService,
 } from './types/users.interface';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -28,13 +29,27 @@ export class UsersService {
     }
   }
 
-  async createOne({ user }: CreateOneService): Promise<User> {
+  async createOne({ createOneUser, user }: CreateOneService): Promise<User> {
     try {
-      const createUserData = await this.usersModel.create(user);
+      const password = await bcrypt.hash(
+        createOneUser.password,
+        this.configService.bcryptSalt,
+      );
+
+      const userParam = {
+        ...createOneUser,
+        createdBy: user,
+        password,
+      };
+
+      const createUserData = await this.usersModel.create(userParam);
+
+      delete createOneUser.password;
 
       return createUserData;
     } catch (error) {
       return Promise.reject(error);
     }
   }
+
 }

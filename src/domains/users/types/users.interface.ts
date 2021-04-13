@@ -21,7 +21,7 @@ export interface GetCurrentUserCredentials {
 
 export interface CreateOneUser {
   username: string;
-  fullname: string;
+  fullname?: string;
   email: string;
   phoneNumber?: string;
   password: string;
@@ -31,5 +31,6 @@ export interface CreateOneUser {
 }
 
 export interface CreateOneService {
-  user: CreateOneUser;
+  createOneUser: CreateOneUser;
+  user: User;
 }

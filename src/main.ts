@@ -2,10 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ConfigService } from './configs/configs.service';
+import showBanner = require('node-banner');
+
 const configService = new ConfigService();
 
 async function bootstrap() {
   try {
+    await showBanner(configService.banner, '', 'green');
+
     const app = await NestFactory.create(AppModule);
     app.enableCors();
 
@@ -18,6 +22,8 @@ async function bootstrap() {
     SwaggerModule.setup('api', app, document);
 
     await app.listen(configService.port);
+
+    console.log(`Our app is started at http://localhost:${configService.port}`);
   } catch (error) {
     console.log(error);
   }

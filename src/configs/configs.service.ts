@@ -29,4 +29,8 @@ export class ConfigService {
   get jwtSecret() {
     return this.envConfig.JWT_SECRET;
   }
+
+  get banner() {
+    return this.envConfig.BANNER;
+  }
 }
