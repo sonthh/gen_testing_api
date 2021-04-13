@@ -7,10 +7,12 @@ import {
   UsePipes,
   Get,
   Query,
+  Put,
+  Param,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
-import { FindManyDto, LoginDto } from './models/users.dto';
+import { FindManyDto, LoginDto, UpdateUserDto } from './models/users.dto';
 import { AuthService } from '../../middlewares/auth/auth.service';
 import { Scopes } from 'src/middlewares/authz/authz.service';
 import { CreateUserDto } from './models/users.dto';
@@ -72,7 +74,7 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe())
   async findMany(
-    @Query() findManyDto: FindManyDto,
+    @Param() findManyDto: FindManyDto,
   ): Promise<FindManyUserResponse> {
     try {
       const users = await this.usersService.findMany({
@@ -80,6 +82,44 @@ export class UsersController {
       });
 
       return users;
+    } catch (error) {
+      this.logger.error(`${error.code}:${error.name}:${error.stack}`);
+      checkControllerErrors(error);
+    }
+  }
+
+  @Get('users/:id')
+  @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
+  @UseGuards(AuthGuard('jwt'))
+  @UsePipes(new ValidationPipe())
+  async findOne(@Param() { id }): Promise<User> {
+    try {
+      const user = await this.usersService.findOne({
+        query: { _id: id },
+      });
+
+      return user;
+    } catch (error) {
+      this.logger.error(`${error.code}:${error.name}:${error.stack}`);
+      checkControllerErrors(error);
+    }
+  }
+
+  @Put('users/:id')
+  @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
+  @UseGuards(AuthGuard('jwt'))
+  @UsePipes(new ValidationPipe())
+  async updateOne(
+    @Body() updateUserDto: UpdateUserDto,
+    @Query() { id },
+  ): Promise<User> {
+    try {
+      const updatedUser = await this.usersService.updateOne({
+        query: { _id: id },
+        updateOneUser: updateUserDto,
+      });
+
+      return updatedUser;
     } catch (error) {
       this.logger.error(`${error.code}:${error.name}:${error.stack}`);
       checkControllerErrors(error);

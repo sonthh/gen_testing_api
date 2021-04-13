@@ -53,3 +53,23 @@ export interface FindManyUserResponse {
   list: User[];
   cursor: string;
 }
+
+export interface FindOneService {
+  query: any;
+}
+
+export interface UpdateUserService {
+  query: any;
+  updateOneUser: UpdateOneUser;
+}
+
+export interface UpdateOneUser {
+  username?: string;
+  fullname?: string;
+  email?: string;
+  phoneNumber?: string;
+  password?: string;
+  profilePhoto?: string;
+  status?: string;
+  role?: string;
+}

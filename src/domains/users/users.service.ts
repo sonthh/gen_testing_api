@@ -8,6 +8,8 @@ import {
   CreateOneService,
   FindManyService,
   FindManyUserResponse,
+  FindOneService,
+  UpdateUserService,
 } from './types/users.interface';
 import * as bcrypt from 'bcrypt';
 import {
@@ -54,6 +56,25 @@ export class UsersService {
       delete createOneUser.password;
 
       return createUserData;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async findOne({ query }: FindOneService): Promise<any> {
+    try {
+      const user = await this.usersModel.findOne(query);
+
+      if (!user) {
+        return Promise.reject({
+          name: 'UserNotFound',
+          code: 404,
+        });
+      }
+
+      delete user.password;
+
+      return user;
     } catch (error) {
       return Promise.reject(error);
     }
@@ -117,6 +138,42 @@ export class UsersService {
         list: users,
         cursor: null,
       };
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async updateOne({ query, updateOneUser }: UpdateUserService): Promise<User> {
+    try {
+      const user = await this.usersModel.findOne(query);
+
+      if (!user) {
+        return Promise.reject({
+          name: 'UserNotFound',
+          code: 404,
+        });
+      }
+
+      let password = user.password;
+
+      if (updateOneUser?.password) {
+        password = await bcrypt.hash(
+          updateOneUser.password,
+          this.configService.bcryptSalt,
+        );
+      }
+
+      updateOneUser.password = password;
+
+      const updated = Object.assign(user, updateOneUser);
+
+      const updatedUser = await this.usersModel.findOneAndUpdate(
+        query,
+        { $set: updated },
+        { upsert: false, new: true },
+      );
+
+      return updatedUser;
     } catch (error) {
       return Promise.reject(error);
     }

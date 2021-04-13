@@ -1,4 +1,7 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {
+  ApiProperty,
+  ApiPropertyOptional,
+} from '@nestjs/swagger';
 import {
   IsEmail,
   IsEnum,
@@ -88,5 +91,41 @@ export class FindManyDto {
 
   @IsEnum(role)
   @IsOptional()
+  readonly role?: string;
+}
+
+export class UpdateUserDto {
+  @ApiPropertyOptional()
+  @IsString()
+  @IsNotEmpty()
+  readonly username?: string;
+
+  @ApiPropertyOptional()
+  @IsNotEmpty()
+  @IsString()
+  readonly fullname?: string;
+
+  @ApiPropertyOptional()
+  @IsNotEmpty()
+  @IsString()
+  @IsEmail()
+  readonly email?: string;
+
+  @ApiPropertyOptional()
+  @IsNotEmpty()
+  @IsString()
+  readonly password?: string;
+
+  @ApiPropertyOptional()
+  @IsNotEmpty()
+  @IsString()
+  readonly phoneNumber?: string;
+
+  @ApiPropertyOptional()
+  @IsEnum(status)
+  readonly status?: string;
+
+  @ApiPropertyOptional()
+  @IsEnum(role)
   readonly role?: string;
 }
