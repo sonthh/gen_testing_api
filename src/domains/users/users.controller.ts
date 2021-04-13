@@ -74,7 +74,7 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe())
   async findMany(
-    @Param() findManyDto: FindManyDto,
+    @Query() findManyDto: FindManyDto,
   ): Promise<FindManyUserResponse> {
     try {
       const users = await this.usersService.findMany({
@@ -111,7 +111,7 @@ export class UsersController {
   @UsePipes(new ValidationPipe())
   async updateOne(
     @Body() updateUserDto: UpdateUserDto,
-    @Query() { id },
+    @Param() { id },
   ): Promise<User> {
     try {
       const updatedUser = await this.usersService.updateOne({

@@ -96,20 +96,9 @@ export class FindManyDto {
 
 export class UpdateUserDto {
   @ApiPropertyOptional()
-  @IsString()
-  @IsNotEmpty()
-  readonly username?: string;
-
-  @ApiPropertyOptional()
   @IsNotEmpty()
   @IsString()
   readonly fullname?: string;
-
-  @ApiPropertyOptional()
-  @IsNotEmpty()
-  @IsString()
-  @IsEmail()
-  readonly email?: string;
 
   @ApiPropertyOptional()
   @IsNotEmpty()

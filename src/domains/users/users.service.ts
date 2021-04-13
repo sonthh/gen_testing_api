@@ -170,7 +170,7 @@ export class UsersService {
       const updatedUser = await this.usersModel.findOneAndUpdate(
         query,
         { $set: updated },
-        { upsert: false, new: true },
+        { upsert: false },
       );
 
       return updatedUser;
