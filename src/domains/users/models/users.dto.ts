@@ -66,7 +66,7 @@ export class CreateUserDto {
 export class FindManyDto {
   @IsNumberString()
   @IsOptional()
-  readonly limit?: string = '10';
+  readonly limit?: string;
 
   @IsEnum(sortBy)
   @IsOptional()
@@ -74,7 +74,7 @@ export class FindManyDto {
 
   @IsEnum(sortDirection)
   @IsOptional()
-  readonly sortDirection?: string = 'ASC';
+  readonly sortDirection?: string;
 
   @IsString()
   @IsNotEmpty()

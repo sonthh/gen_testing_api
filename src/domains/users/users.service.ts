@@ -95,7 +95,7 @@ export class UsersService {
 
       newQuery = buildRegexQuery({
         query: newQuery,
-        regexFields: ['name'],
+        regexFields: ['fullname', 'username'],
       });
 
       const {
