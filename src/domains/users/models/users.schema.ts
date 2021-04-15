@@ -1,5 +1,7 @@
 import * as mongoose from 'mongoose';
 
+export const Users = 'Users';
+
 export const UsersSchema = new mongoose.Schema(
   {
     username: {

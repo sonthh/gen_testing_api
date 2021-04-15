@@ -17,11 +17,12 @@ import {
   buildFindingQueryByObject,
   buildRegexQuery,
 } from 'src/helpers/build';
+import { Users } from './models/users.schema';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel('Users')
+    @InjectModel(Users)
     private readonly usersModel: Model<User>,
     private readonly configService: ConfigService,
   ) {}

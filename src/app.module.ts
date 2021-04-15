@@ -1,3 +1,4 @@
+import { TestResultModule } from './domains/test_result/testResult.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from './configs/configs.module';
 import { UsersModule } from './domains/users/users.module';
@@ -18,6 +19,12 @@ const DatabaseModule = MongooseModule.forRootAsync({
 });
 
 @Module({
-  imports: [ConfigModule, DatabaseModule, UsersModule, LoggerModule],
+  imports: [
+    TestResultModule,
+    ConfigModule,
+    DatabaseModule,
+    UsersModule,
+    LoggerModule,
+  ],
 })
 export class AppModule {}
