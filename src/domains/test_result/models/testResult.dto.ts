@@ -1,5 +1,16 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsNotEmpty,
+  IsNumberString,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+
+export const sortBy = ['_id', 'createdBy', 'createdAt'];
+
+export const sortDirection = ['ASC', 'DESC'];
 
 export class Result {
   @ApiPropertyOptional()
@@ -62,6 +73,47 @@ export class Gen {
 }
 
 export class CreateTestResultDto {
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsArray()
+  readonly results?: Result[];
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsArray()
+  readonly recommends?: Recommend[];
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsArray()
+  readonly gens?: Gen[];
+}
+
+export class FindManyDto {
+  @IsNumberString()
+  @IsOptional()
+  readonly limit?: string;
+
+  @IsEnum(sortBy)
+  @IsOptional()
+  readonly sortBy?: string = '_id';
+
+  @IsEnum(sortDirection)
+  @IsOptional()
+  readonly sortDirection?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  readonly createdAt?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  readonly cursor?: string;
+}
+
+export class UpdateTestResultDto {
   @ApiPropertyOptional()
   @IsOptional()
   @IsArray()

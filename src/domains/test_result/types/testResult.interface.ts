@@ -45,6 +45,7 @@ export interface FindOneService {
 
 export interface FindManyQuery {
   sortBy?: string;
+  createdAt?: string;
   sortDirection?: string;
   limit?: string;
   cursor?: string;
@@ -54,8 +55,19 @@ export interface FindManyService {
   query: FindManyQuery;
 }
 
-export interface FindManyUserResponse {
+export interface FindManyTestResultResponse {
   total: number;
   list: TestResult[];
   cursor: string;
+}
+
+export interface UpdateTestResultService {
+  query: any;
+  updateOneTestResult: UpdateOneTestResult;
+}
+
+export interface UpdateOneTestResult {
+  results?: Result[];
+  recommends?: Recommend[];
+  gens?: Gen[];
 }
