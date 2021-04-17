@@ -33,6 +33,9 @@ export interface FindOneService {
 }
 
 export interface FindManyQuery {
+  name?: string;
+  patient?: string;
+  createdBy?: string;
   sortBy?: string;
   createdAt?: string;
   sortDirection?: string;

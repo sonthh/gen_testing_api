@@ -34,7 +34,7 @@ export class TestResultController {
   private logger = new MyLogger(TestResultController.name);
 
   @Post()
-  @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
+  // @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe())
   async createOne(
@@ -55,7 +55,7 @@ export class TestResultController {
   }
 
   @Get(':id')
-  @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
+  // @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
   @UseGuards(AuthGuard('jwt'))
   async findOne(@Param() { id }): Promise<TestResult> {
     try {
@@ -71,7 +71,7 @@ export class TestResultController {
   }
 
   @Get('')
-  @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
+  // @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe())
   async findMany(
@@ -90,7 +90,7 @@ export class TestResultController {
   }
 
   @Put(':id')
-  @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
+  // @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe())
   async updateOne(
@@ -111,7 +111,7 @@ export class TestResultController {
   }
 
   @Delete(':id')
-  @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
+  // @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
   @UseGuards(AuthGuard('jwt'))
   async deleteOne(@Param() { id }): Promise<boolean> {
     try {
