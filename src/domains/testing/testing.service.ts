@@ -59,67 +59,67 @@ export class TestingService {
     }
   }
 
-  async findMany({
-    query,
-  }: FindManyService): Promise<FindManyTestResultResponse> {
-    try {
-      let newQuery: any = { ...query };
-      const { limit } = query;
-      const promises = [];
+  // async findMany({
+  //   query,
+  // }: FindManyService): Promise<FindManyTestResultResponse> {
+  //   try {
+  //     let newQuery: any = { ...query };
+  //     const { limit } = query;
+  //     const promises = [];
 
-      newQuery = buildFindingQueryByObject({
-        query: newQuery,
-        objectKeys: {
-          ids: '_id',
-        },
-      });
+  //     newQuery = buildFindingQueryByObject({
+  //       query: newQuery,
+  //       objectKeys: {
+  //         ids: '_id',
+  //       },
+  //     });
 
-      const {
-        sortingCondition,
-        findingQuery,
-        findAllQuery,
-        hasPage,
-      } = buildFindingQuery({ query: newQuery });
+  //     const {
+  //       sortingCondition,
+  //       findingQuery,
+  //       findAllQuery,
+  //       hasPage,
+  //     } = buildFindingQuery({ query: newQuery });
 
-      if (hasPage) {
-        promises.push(
-          this.testResultModel
-            .find(findingQuery)
-            .sort(sortingCondition)
-            .limit(Number(limit))
-            .populate({ path: 'createdBy' }),
-          this.testResultModel.countDocuments(findAllQuery),
-        );
-      }
+  //     if (hasPage) {
+  //       promises.push(
+  //         this.testResultModel
+  //           .find(findingQuery)
+  //           .sort(sortingCondition)
+  //           .limit(Number(limit))
+  //           .populate({ path: 'createdBy' }),
+  //         this.testResultModel.countDocuments(findAllQuery),
+  //       );
+  //     }
 
-      if (!hasPage) {
-        promises.push(
-          this.testResultModel
-            .find(findAllQuery)
-            .populate({ path: 'createdBy' }),
-          this.testResultModel.countDocuments(findAllQuery),
-        );
-      }
+  //     if (!hasPage) {
+  //       promises.push(
+  //         this.testResultModel
+  //           .find(findAllQuery)
+  //           .populate({ path: 'createdBy' }),
+  //         this.testResultModel.countDocuments(findAllQuery),
+  //       );
+  //     }
 
-      const [testResult, total] = await Promise.all(promises);
+  //     const [testResult, total] = await Promise.all(promises);
 
-      if (!testResult || !testResult.length) {
-        return {
-          total: 0,
-          list: [],
-          cursor: null,
-        };
-      }
+  //     if (!testResult || !testResult.length) {
+  //       return {
+  //         total: 0,
+  //         list: [],
+  //         cursor: null,
+  //       };
+  //     }
 
-      return {
-        total,
-        list: testResult,
-        cursor: null,
-      };
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
+  //     return {
+  //       total,
+  //       list: testResult,
+  //       cursor: null,
+  //     };
+  //   } catch (error) {
+  //     return Promise.reject(error);
+  //   }
+  // }
 
   // async updateOne({
   //   query,
