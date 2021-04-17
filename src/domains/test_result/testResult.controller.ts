@@ -26,10 +26,16 @@ import {
   UpdateTestResultDto,
 } from './models/testResult.dto';
 import { checkControllerErrors } from 'src/helpers/check_errors';
+import { ApiTags } from '@nestjs/swagger';
+import { TestingService } from '../testing/testing.service';
 
 @Controller('test_results')
+@ApiTags('test_results')
 export class TestResultController {
-  constructor(private readonly testResultService: TestResultService) {}
+  constructor(
+    private readonly testResultService: TestResultService,
+    private readonly testingService: TestingService,
+  ) {}
 
   private logger = new MyLogger(TestResultController.name);
 
@@ -42,12 +48,16 @@ export class TestResultController {
     @Body() createOneDto: CreateTestResultDto,
   ): Promise<TestResult> {
     try {
-      const newUser = await this.testResultService.createOne({
+      await this.testingService.findOne({
+        query: { _id: createOneDto.testingId },
+      });
+
+      const result = await this.testResultService.createOne({
         createOneTestResult: { ...createOneDto },
         user,
       });
 
-      return newUser;
+      return result;
     } catch (error) {
       this.logger.error(`${error.code}:${error.name}:${error.stack}`);
       checkControllerErrors(error);

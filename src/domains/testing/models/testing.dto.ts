@@ -1,11 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
-  IsArray,
   IsEnum,
   IsNotEmpty,
-  IsNumber,
   IsNumberString,
-  IsObject,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -14,37 +11,11 @@ export const sortBy = ['_id', 'createdBy', 'createdAt'];
 
 export const sortDirection = ['ASC', 'DESC'];
 
-export class SubTesting {
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  readonly name: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  readonly description: string;
-
-  @ApiProperty()
-  @IsNumber()
-  readonly numberGen: number;
-
-  @ApiProperty()
-  @IsString({ each: true })
-  @IsArray()
-  readonly gen: string[];
-}
-
 export class CreateTestingDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
   readonly name: string;
-
-  @ApiProperty()
-  @IsArray()
-  @IsObject({ each: true })
-  readonly results: SubTesting[];
 
   @ApiProperty()
   @IsString()
@@ -53,6 +24,16 @@ export class CreateTestingDto {
 }
 
 export class FindManyDto {
+  @IsString()
+  @IsOptional()
+  @IsNotEmpty()
+  readonly name?: string;
+
+  @IsString()
+  @IsOptional()
+  @IsNotEmpty()
+  readonly patient?: string;
+
   @IsNumberString()
   @IsOptional()
   readonly limit?: string;
@@ -78,15 +59,13 @@ export class FindManyDto {
 
 export class UpdateTestingDto {
   @ApiPropertyOptional()
-  @ApiPropertyOptional()
   @IsString()
   @IsNotEmpty()
   @IsOptional()
   readonly name?: string;
 
   @ApiPropertyOptional()
-  @IsArray()
-  @IsObject({ each: true })
-  @IsOptional()
-  readonly result?: SubTesting[];
+  @IsString()
+  @IsNotEmpty()
+  readonly patient?: string;
 }

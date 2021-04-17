@@ -1,10 +1,19 @@
 import { ObjectId } from 'mongodb';
 import * as mongoose from 'mongoose';
+import { Testings } from 'src/domains/testing/models/testing.schema';
 import { Users } from 'src/domains/users/models/users.schema';
 
 export const TestResults = 'TestResults';
 
 export const TestResultSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
   results: [
     {
       result: {
@@ -64,6 +73,11 @@ export const TestResultSchema = new mongoose.Schema({
   createdBy: {
     type: ObjectId,
     ref: Users,
+    required: true,
+  },
+  testingId: {
+    type: ObjectId,
+    ref: Testings,
     required: true,
   },
 });

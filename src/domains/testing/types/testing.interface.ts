@@ -20,7 +20,6 @@ export interface Testing extends Document {
 export interface CreateOneTesting {
   name: string;
   patient: string;
-  results: SubTesting[];
 }
 
 export interface CreateOneService {
@@ -47,11 +46,18 @@ export interface FindManyService {
   query: FindManyQuery;
 }
 
-// export interface FindManyTestResultResponse {}
-
-export interface UpdateTestResultService {
-  query: any;
-  updateOneTestResult: any;
+export interface FindManyTestingResponse {
+  list: Testing[];
+  total: number;
+  cursor: string;
 }
 
-// export interface UpdateOneTestResult {}
+export interface UpdateOneTestingService {
+  query: any;
+  updateOneTesting: UpdateOneTesting;
+}
+
+export interface UpdateOneTesting {
+  name?: string;
+  patient?: string;
+}

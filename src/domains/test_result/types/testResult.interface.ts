@@ -21,18 +21,24 @@ interface Gen {
 }
 
 export interface TestResult extends Document {
+  name: string;
+  description: string;
   results: Result[];
   recommends: Recommend[];
   gens: Gen[];
   createdAt: string;
   updatedAt: string;
   createdBy: Types.ObjectId;
+  testingId: Types.ObjectId;
 }
 
 export interface CreateOneTestResult {
+  name: string;
+  description: string;
   results?: Result[];
   recommends?: Recommend[];
   gens?: Gen[];
+  testingId: string;
 }
 
 export interface CreateOneService {

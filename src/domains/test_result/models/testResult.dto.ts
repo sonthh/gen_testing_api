@@ -1,4 +1,4 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsArray,
   IsEnum,
@@ -73,6 +73,16 @@ export class Gen {
 }
 
 export class CreateTestResultDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  readonly name: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  readonly description: string;
+
   @ApiPropertyOptional()
   @IsOptional()
   @IsArray()
@@ -87,6 +97,11 @@ export class CreateTestResultDto {
   @IsOptional()
   @IsArray()
   readonly gens?: Gen[];
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  readonly testingId: string;
 }
 
 export class FindManyDto {

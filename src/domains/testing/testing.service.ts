@@ -4,14 +4,16 @@ import { Model } from 'mongoose';
 import {
   buildFindingQuery,
   buildFindingQueryByObject,
+  buildRegexQuery,
 } from 'src/helpers/build';
 import { Testings } from './models/testing.schema';
 import {
   CreateOneService,
   FindManyService,
+  FindManyTestingResponse,
   FindOneService,
   Testing,
-  UpdateTestResultService,
+  UpdateOneTestingService,
 } from './types/testing.interface';
 
 @Injectable()
@@ -59,93 +61,98 @@ export class TestingService {
     }
   }
 
-  // async findMany({
-  //   query,
-  // }: FindManyService): Promise<FindManyTestResultResponse> {
-  //   try {
-  //     let newQuery: any = { ...query };
-  //     const { limit } = query;
-  //     const promises = [];
+  async findMany({ query }: FindManyService): Promise<FindManyTestingResponse> {
+    try {
+      let newQuery: any = { ...query };
+      const { limit } = query;
+      const promises = [];
 
-  //     newQuery = buildFindingQueryByObject({
-  //       query: newQuery,
-  //       objectKeys: {
-  //         ids: '_id',
-  //       },
-  //     });
+      newQuery = buildFindingQueryByObject({
+        query: newQuery,
+        objectKeys: {
+          ids: '_id',
+        },
+      });
 
-  //     const {
-  //       sortingCondition,
-  //       findingQuery,
-  //       findAllQuery,
-  //       hasPage,
-  //     } = buildFindingQuery({ query: newQuery });
+      newQuery = buildRegexQuery({
+        query: newQuery,
+        regexFields: ['name'],
+      });
 
-  //     if (hasPage) {
-  //       promises.push(
-  //         this.testResultModel
-  //           .find(findingQuery)
-  //           .sort(sortingCondition)
-  //           .limit(Number(limit))
-  //           .populate({ path: 'createdBy' }),
-  //         this.testResultModel.countDocuments(findAllQuery),
-  //       );
-  //     }
+      const {
+        sortingCondition,
+        findingQuery,
+        findAllQuery,
+        hasPage,
+      } = buildFindingQuery({ query: newQuery });
 
-  //     if (!hasPage) {
-  //       promises.push(
-  //         this.testResultModel
-  //           .find(findAllQuery)
-  //           .populate({ path: 'createdBy' }),
-  //         this.testResultModel.countDocuments(findAllQuery),
-  //       );
-  //     }
+      if (hasPage) {
+        promises.push(
+          this.testingModel
+            .find(findingQuery)
+            .sort(sortingCondition)
+            .limit(Number(limit))
+            .populate({ path: 'createdBy' })
+            .populate({ path: 'patient' }),
+          this.testingModel.countDocuments(findAllQuery),
+        );
+      }
 
-  //     const [testResult, total] = await Promise.all(promises);
+      if (!hasPage) {
+        promises.push(
+          this.testingModel
+            .find(findAllQuery)
+            .populate({ path: 'createdBy' })
+            .populate({ path: 'patient' }),
+          this.testingModel.countDocuments(findAllQuery),
+        );
+      }
 
-  //     if (!testResult || !testResult.length) {
-  //       return {
-  //         total: 0,
-  //         list: [],
-  //         cursor: null,
-  //       };
-  //     }
+      const [testResult, total] = await Promise.all(promises);
 
-  //     return {
-  //       total,
-  //       list: testResult,
-  //       cursor: null,
-  //     };
-  //   } catch (error) {
-  //     return Promise.reject(error);
-  //   }
-  // }
+      if (!testResult || !testResult.length) {
+        return {
+          total: 0,
+          list: [],
+          cursor: null,
+        };
+      }
 
-  // async updateOne({
-  //   query,
-  //   updateOneTestResult,
-  // }: UpdateTestResultService): Promise<TestResult> {
-  //   try {
-  //     const testResult = await this.testResultModel.findOne(query);
+      return {
+        total,
+        list: testResult,
+        cursor: null,
+      };
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
 
-  //     if (!testResult) {
-  //       return Promise.reject({
-  //         name: 'TestResultNotFound',
-  //         code: 404,
-  //       });
-  //     }
+  async updateOne({
+    query,
+    updateOneTesting,
+  }: UpdateOneTestingService): Promise<Testing> {
+    try {
+      const testing = await this.testingModel.findOne(query);
 
-  //     const updated = Object.assign(testResult, updateOneTestResult);
+      if (!testing) {
+        return Promise.reject({
+          name: 'TestingNotFound',
+          code: 404,
+        });
+      }
 
-  //     const updatedTestResult = await this.testResultModel.findOneAndUpdate(
-  //       query,
-  //       { $set: updated },
-  //       { upsert: false, new: true },
-  //     );
+      const updated = Object.assign(testing, updateOneTesting);
 
-  //     return updatedTestResult;
-  //   } catch (error) {
-  //     return Promise.reject(error);
-  //   }
-  // }
+      const updatedTesting = await this.testingModel.findOneAndUpdate(
+        query,
+        { $set: updated },
+        { upsert: false, new: true },
+      );
+
+      return updatedTesting;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
 }

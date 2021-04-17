@@ -9,28 +9,6 @@ export const TestingSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  results: [
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-      description: {
-        type: String,
-        required: true,
-      },
-      numberGen: {
-        type: Number,
-        required: true,
-      },
-      gen: [
-        {
-          type: String,
-          required: true,
-        },
-      ],
-    },
-  ],
   patient: {
     type: ObjectId,
     ref: Users,
