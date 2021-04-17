@@ -9,13 +9,12 @@ import {
   Param,
   Query,
   Put,
-  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Scopes } from 'src/middlewares/authz/authz.service';
 import { ValidationPipe } from 'src/middlewares/pipes/validation.pipe';
 import { MyLogger } from '../logger/logger.service';
-import { TestResultService } from './testResult.service';
+import { TestResultService } from './testting.service';
 import {
   FindManyTestResultResponse,
   TestResult,
@@ -24,7 +23,7 @@ import {
   CreateTestResultDto,
   FindManyDto,
   UpdateTestResultDto,
-} from './models/testResult.dto';
+} from './models/testting.dto';
 import { checkControllerErrors } from 'src/helpers/check_errors';
 
 @Controller('test_results')
@@ -101,22 +100,6 @@ export class TestResultController {
       const updatedTestResult = await this.testResultService.updateOne({
         query: { _id: id },
         updateOneTestResult: updateTestResultDto,
-      });
-
-      return updatedTestResult;
-    } catch (error) {
-      this.logger.error(`${error.code}:${error.name}:${error.stack}`);
-      checkControllerErrors(error);
-    }
-  }
-
-  @Delete(':id')
-  @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
-  @UseGuards(AuthGuard('jwt'))
-  async deleteOne(@Param() { id }): Promise<boolean> {
-    try {
-      const updatedTestResult = await this.testResultService.deleteOne({
-        query: { _id: id },
       });
 
       return updatedTestResult;

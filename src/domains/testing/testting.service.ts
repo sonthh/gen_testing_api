@@ -5,7 +5,7 @@ import {
   buildFindingQuery,
   buildFindingQueryByObject,
 } from 'src/helpers/build';
-import { TestResults } from './models/testResult.schema';
+import { TestResults } from './models/testting.schema';
 import {
   CreateOneService,
   FindManyService,
@@ -13,7 +13,6 @@ import {
   TestResult,
   FindManyTestResultResponse,
   UpdateTestResultService,
-  DeleteOneService,
 } from './types/testResult.interface';
 
 @Injectable()
@@ -145,25 +144,6 @@ export class TestResultService {
       );
 
       return updatedTestResult;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async deleteOne({ query }: DeleteOneService): Promise<boolean> {
-    try {
-      const testResult = await this.testResultModel.findOne(query);
-
-      if (!testResult) {
-        return Promise.reject({
-          name: 'TestResultNotFound',
-          code: 404,
-        });
-      }
-
-      await this.testResultModel.findByIdAndDelete(query);
-
-      return true;
     } catch (error) {
       return Promise.reject(error);
     }

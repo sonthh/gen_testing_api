@@ -1,4 +1,3 @@
-import { ObjectId } from 'bson';
 import { Types, Document } from 'mongoose';
 import { User } from '../../users/types/users.interface';
 
@@ -71,10 +70,4 @@ export interface UpdateOneTestResult {
   results?: Result[];
   recommends?: Recommend[];
   gens?: Gen[];
-}
-
-export interface DeleteOneService {
-  query: {
-    _id: ObjectId;
-  };
 }
