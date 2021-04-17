@@ -49,7 +49,7 @@ export class UsersController {
   }
 
   @Post('users/create')
-  @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
+  // @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe())
   async createOne(
@@ -70,7 +70,7 @@ export class UsersController {
   }
 
   @Get('users')
-  @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
+  // @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe())
   async findMany(
@@ -89,7 +89,7 @@ export class UsersController {
   }
 
   @Get('users/:id')
-  @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
+  // @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe())
   async findOne(@Param() { id }): Promise<User> {
@@ -106,7 +106,7 @@ export class UsersController {
   }
 
   @Put('users/:id')
-  @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
+  // @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe())
   async updateOne(
