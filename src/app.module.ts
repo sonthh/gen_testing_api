@@ -5,6 +5,7 @@ import { UsersModule } from './domains/users/users.module';
 import { ConfigService } from './configs/configs.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LoggerModule } from './domains/logger/logger.module';
+import { TestingModule } from './domains/testing/testing.module';
 
 const DatabaseModule = MongooseModule.forRootAsync({
   useFactory: async (configService: ConfigService) => {
@@ -25,6 +26,7 @@ const DatabaseModule = MongooseModule.forRootAsync({
     DatabaseModule,
     UsersModule,
     LoggerModule,
+    TestingModule,
   ],
 })
 export class AppModule {}

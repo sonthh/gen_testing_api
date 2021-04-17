@@ -14,39 +14,40 @@ import { AuthGuard } from '@nestjs/passport';
 import { Scopes } from 'src/middlewares/authz/authz.service';
 import { ValidationPipe } from 'src/middlewares/pipes/validation.pipe';
 import { MyLogger } from '../logger/logger.service';
-import { TestResultService } from './testting.service';
-import {
-  FindManyTestResultResponse,
-  TestResult,
-} from './types/testResult.interface';
-import {
-  CreateTestResultDto,
-  FindManyDto,
-  UpdateTestResultDto,
-} from './models/testting.dto';
+import { Testing } from './types/testing.interface';
+import { CreateTestingDto } from './models/testing.dto';
 import { checkControllerErrors } from 'src/helpers/check_errors';
+import { TestingService } from './testing.service';
+import { UsersService } from '../users/users.service';
 
-@Controller('test_results')
-export class TestResultController {
-  constructor(private readonly testResultService: TestResultService) {}
+@Controller('testings')
+export class TestingController {
+  constructor(
+    private readonly testingService: TestingService,
+    private readonly userService: UsersService,
+  ) {}
 
-  private logger = new MyLogger(TestResultController.name);
+  private logger = new MyLogger(TestingController.name);
 
   @Post()
-  @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
+  @UseGuards(new Scopes([]))
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe())
   async createOne(
     @Request() { user },
-    @Body() createOneDto: CreateTestResultDto,
-  ): Promise<TestResult> {
+    @Body() createOneDto: CreateTestingDto,
+  ): Promise<Testing> {
     try {
-      const newUser = await this.testResultService.createOne({
-        createOneTestResult: { ...createOneDto },
+      await this.userService.findOne({
+        query: { _id: createOneDto.patient },
+      });
+
+      const testing = await this.testingService.createOne({
+        createOneTesting: createOneDto,
         user,
       });
 
-      return newUser;
+      return testing;
     } catch (error) {
       this.logger.error(`${error.code}:${error.name}:${error.stack}`);
       checkControllerErrors(error);
@@ -54,55 +55,16 @@ export class TestResultController {
   }
 
   @Get(':id')
-  @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
+  @UseGuards(new Scopes([]))
   @UseGuards(AuthGuard('jwt'))
-  async findOne(@Param() { id }): Promise<TestResult> {
+  @UsePipes(new ValidationPipe())
+  async findOne(@Param() { id }): Promise<Testing> {
     try {
-      const newUser = await this.testResultService.findOne({
+      const testing = await this.testingService.findOne({
         query: { _id: id },
       });
 
-      return newUser;
-    } catch (error) {
-      this.logger.error(`${error.code}:${error.name}:${error.stack}`);
-      checkControllerErrors(error);
-    }
-  }
-
-  @Get('')
-  @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
-  @UseGuards(AuthGuard('jwt'))
-  @UsePipes(new ValidationPipe())
-  async findMany(
-    @Query() findManyDto: FindManyDto,
-  ): Promise<FindManyTestResultResponse> {
-    try {
-      const testResults = await this.testResultService.findMany({
-        query: findManyDto,
-      });
-
-      return testResults;
-    } catch (error) {
-      this.logger.error(`${error.code}:${error.name}:${error.stack}`);
-      checkControllerErrors(error);
-    }
-  }
-
-  @Put(':id')
-  @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
-  @UseGuards(AuthGuard('jwt'))
-  @UsePipes(new ValidationPipe())
-  async updateOne(
-    @Body() updateTestResultDto: UpdateTestResultDto,
-    @Param() { id },
-  ): Promise<TestResult> {
-    try {
-      const updatedTestResult = await this.testResultService.updateOne({
-        query: { _id: id },
-        updateOneTestResult: updateTestResultDto,
-      });
-
-      return updatedTestResult;
+      return testing;
     } catch (error) {
       this.logger.error(`${error.code}:${error.name}:${error.stack}`);
       checkControllerErrors(error);
