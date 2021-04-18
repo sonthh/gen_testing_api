@@ -18,12 +18,17 @@ export class AuthService {
       username,
     });
 
+    if (user.status === 'INACTIVE') {
+      return null;
+    }
+
     const isValid = user && (await bcrypt.compare(password, user.password));
 
     if (isValid) {
       delete user.password;
       return user;
     }
+
 
     return null;
   }
