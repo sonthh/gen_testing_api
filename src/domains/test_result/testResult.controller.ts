@@ -67,13 +67,20 @@ export class TestResultController {
   @Get(':id')
   // @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
   @UseGuards(AuthGuard('jwt'))
-  async findOne(@Param() { id }): Promise<TestResult> {
+  async findOne(@Param() { id }): Promise<any> {
     try {
-      const newUser = await this.testResultService.findOne({
+      const testResult = await this.testResultService.findOne({
         query: { _id: id },
       });
 
-      return newUser;
+      const testing = await this.testingService.findOne({
+        query: { _id: testResult.testingId },
+      });
+
+      const response: any = testResult;
+      response.testingId = testing;
+
+      return response;
     } catch (error) {
       this.logger.error(`${error.code}:${error.name}:${error.stack}`);
       checkControllerErrors(error);

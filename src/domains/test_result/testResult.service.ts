@@ -45,7 +45,8 @@ export class TestResultService {
     try {
       const testResult = await this.testResultModel
         .findOne(query)
-        .populate('createdBy');
+        .populate('createdBy')
+        .populate('testingId');
 
       if (!testResult) {
         return Promise.reject({

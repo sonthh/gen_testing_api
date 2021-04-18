@@ -30,6 +30,7 @@ export interface TestResult extends Document {
   updatedAt: string;
   createdBy: Types.ObjectId;
   testingId: Types.ObjectId;
+  patient?: Types.ObjectId;
 }
 
 export interface CreateOneTestResult {
