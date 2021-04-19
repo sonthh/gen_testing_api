@@ -1,3 +1,4 @@
+import { GensModule } from './domains/gens/gens.module';
 import { TestResultModule } from './domains/test_result/testResult.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from './configs/configs.module';
@@ -21,6 +22,7 @@ const DatabaseModule = MongooseModule.forRootAsync({
 
 @Module({
   imports: [
+    GensModule,
     TestResultModule,
     ConfigModule,
     DatabaseModule,
@@ -29,4 +31,4 @@ const DatabaseModule = MongooseModule.forRootAsync({
     TestingModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }
