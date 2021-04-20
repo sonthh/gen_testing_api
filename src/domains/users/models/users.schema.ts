@@ -1,3 +1,4 @@
+import { ObjectId } from 'bson';
 import * as mongoose from 'mongoose';
 
 export const Users = 'Users';
@@ -40,6 +41,11 @@ export const UsersSchema = new mongoose.Schema(
     updatedAt: {
       type: Date,
       default: Date.now,
+    },
+    createdBy: {
+      type: ObjectId,
+      ref: Users,
+      required: true,
     },
   },
   {

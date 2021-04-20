@@ -89,6 +89,12 @@ export class FindManyDto {
   @IsEnum(role)
   @IsOptional()
   readonly role?: string;
+
+  @ApiPropertyOptional()
+  @IsNotEmpty()
+  @IsString()
+  @IsOptional()
+  readonly createBy?: string;
 }
 
 export class UpdateUserDto {

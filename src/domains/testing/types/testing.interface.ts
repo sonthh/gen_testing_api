@@ -11,7 +11,7 @@ export interface SubTesting {
 export interface Testing extends Document {
   name: string;
   results: SubTesting[];
-  patient: Types.ObjectId;
+  patient?: Types.ObjectId;
   createdBy: Types.ObjectId;
   createdAt: string;
   updatedAt: string;
@@ -19,7 +19,7 @@ export interface Testing extends Document {
 
 export interface CreateOneTesting {
   name: string;
-  patient: string;
+  patient?: string;
 }
 
 export interface CreateOneService {

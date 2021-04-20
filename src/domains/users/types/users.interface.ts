@@ -42,6 +42,7 @@ export interface FindManyQuery {
   role?: string;
   fullname?: string;
   cursor?: string;
+  createdBy?: Types.ObjectId;
 }
 
 export interface FindManyService {

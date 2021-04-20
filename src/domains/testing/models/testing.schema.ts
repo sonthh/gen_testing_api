@@ -12,7 +12,7 @@ export const TestingSchema = new mongoose.Schema({
   patient: {
     type: ObjectId,
     ref: Users,
-    required: true,
+    required: false,
   },
   createdAt: {
     type: Date,

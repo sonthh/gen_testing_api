@@ -44,9 +44,9 @@ export class TestingController {
     @Body() createOneDto: CreateTestingDto,
   ): Promise<Testing> {
     try {
-      await this.userService.findOne({
-        query: { _id: createOneDto.patient },
-      });
+      // await this.userService.findOne({
+      //   query: { _id: createOneDto.patient },
+      // });
 
       const testing = await this.testingService.createOne({
         createOneTesting: createOneDto,

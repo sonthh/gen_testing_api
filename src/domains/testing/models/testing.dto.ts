@@ -20,7 +20,8 @@ export class CreateTestingDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  readonly patient: string;
+  @IsOptional()
+  readonly patient?: string;
 }
 
 export class FindManyDto {
@@ -67,5 +68,6 @@ export class UpdateTestingDto {
   @ApiPropertyOptional()
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   readonly patient?: string;
 }

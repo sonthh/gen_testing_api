@@ -42,6 +42,7 @@ export class UsersController {
       return {
         ...accessToken,
         role: user.role,
+        userID: user._id,
       };
     } catch (error) {
       console.log(error);
