@@ -33,4 +33,12 @@ export class ConfigService {
   get banner() {
     return this.envConfig.BANNER;
   }
+
+  get mailer() {
+    return {
+      user: this.envConfig.MAILER_USER,
+      pass: this.envConfig.MAILER_PASS,
+      service: this.envConfig.MAILER_SERVICE,
+    };
+  }
 }
