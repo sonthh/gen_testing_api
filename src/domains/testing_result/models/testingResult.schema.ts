@@ -6,7 +6,7 @@ import { Users } from 'src/domains/users/models/users.schema';
 export const TestingResults = 'TestingResults';
 
 export const TestingResultSchema = new mongoose.Schema({
-  testResults: [
+  testResult: [
     {
       name: {
         type: String,

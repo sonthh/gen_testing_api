@@ -91,7 +91,9 @@ export class TestingResultService {
             .find(findingQuery)
             .sort(sortingCondition)
             .limit(Number(limit))
-            .populate({ path: 'createdBy' }),
+            .populate({ path: 'createdBy' })
+            .populate({ path: 'patient' })
+            .populate({ path: 'testingId' }),
           this.testingResultModel.countDocuments(findAllQuery),
         );
       }
@@ -100,7 +102,9 @@ export class TestingResultService {
         promises.push(
           this.testingResultModel
             .find(findAllQuery)
-            .populate({ path: 'createdBy' }),
+            .populate({ path: 'createdBy' })
+            .populate({ path: 'testingId' })
+            .populate({ path: 'patient' }),
           this.testingResultModel.countDocuments(findAllQuery),
         );
       }

@@ -6,10 +6,7 @@ import {
   Request,
   Body,
   Get,
-  Param,
   Query,
-  Put,
-  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Scopes } from 'src/middlewares/authz/authz.service';
@@ -87,24 +84,24 @@ export class TestingResultController {
   //   }
   // }
 
-  // @Get('')
-  // // @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
-  // @UseGuards(AuthGuard('jwt'))
-  // @UsePipes(new ValidationPipe())
-  // async findMany(
-  //   @Query() findManyDto: FindManyDto,
-  // ): Promise<FindManyTestResultResponse> {
-  //   try {
-  //     const testResults = await this.testResultService.findMany({
-  //       query: findManyDto,
-  //     });
+  @Get('')
+  // @UseGuards(new Scopes(['ADMIN', 'DOCTOR']))
+  @UseGuards(AuthGuard('jwt'))
+  @UsePipes(new ValidationPipe())
+  async findMany(
+    @Query() findManyDto: FindManyDto,
+  ): Promise<FindManyTestingResultResponse> {
+    try {
+      const testResults = await this.testingResultService.findMany({
+        query: findManyDto,
+      });
 
-  //     return testResults;
-  //   } catch (error) {
-  //     this.logger.error(`${error.code}:${error.name}:${error.stack}`);
-  //     checkControllerErrors(error);
-  //   }
-  // }
+      return testResults;
+    } catch (error) {
+      this.logger.error(`${error.code}:${error.name}:${error.stack}`);
+      checkControllerErrors(error);
+    }
+  }
 
   // @Put(':id')
   // // @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
