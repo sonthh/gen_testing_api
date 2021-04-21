@@ -48,6 +48,7 @@ export class TestingResultService {
       const testResult = await this.testingResultModel
         .findOne(query)
         .populate('createdBy')
+        .populate('patient')
         .populate('testingId');
 
       if (!testResult) {

@@ -138,6 +138,11 @@ export class FindManyDto {
   @IsNotEmpty()
   @IsOptional()
   readonly cursor?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  readonly patient?: string;
 }
 
 export class UpdateTestingResultDto {
