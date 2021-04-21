@@ -84,6 +84,11 @@ export const TestingResultSchema = new mongoose.Schema({
     ref: Testings,
     required: true,
   },
+  patient: {
+    type: ObjectId,
+    ref: Users,
+    required: true,
+  },
 });
 
 TestingResultSchema.pre('findOneAndUpdate', function () {
