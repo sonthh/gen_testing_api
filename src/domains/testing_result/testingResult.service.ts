@@ -132,19 +132,19 @@ export class TestingResultService {
 
   async updateOne({
     query,
-    updateOneTestResult,
+    updateOneTestingResult,
   }: UpdateTestingResultService): Promise<TestingResult> {
     try {
-      const testResult = await this.testingResultModel.findOne(query);
+      const testingResult = await this.testingResultModel.findOne(query);
 
-      if (!testResult) {
+      if (!testingResult) {
         return Promise.reject({
           name: 'TestResultNotFound',
           code: 404,
         });
       }
 
-      const updated = Object.assign(testResult, updateOneTestResult);
+      const updated = Object.assign(testingResult, updateOneTestingResult);
 
       const updatedTestResult = await this.testingResultModel.findOneAndUpdate(
         query,

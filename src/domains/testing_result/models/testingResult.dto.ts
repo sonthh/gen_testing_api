@@ -149,15 +149,5 @@ export class UpdateTestingResultDto {
   @ApiPropertyOptional()
   @IsOptional()
   @IsArray()
-  readonly results?: Result[];
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsArray()
-  readonly recommends?: Recommend[];
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsArray()
-  readonly gens?: Gen[];
+  readonly testResult: TestResult[];
 }

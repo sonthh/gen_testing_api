@@ -8,6 +8,7 @@ import {
   Get,
   Query,
   Param,
+  Put,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Scopes } from 'src/middlewares/authz/authz.service';
@@ -97,26 +98,26 @@ export class TestingResultController {
     }
   }
 
-  // @Put(':id')
-  // // @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
-  // @UseGuards(AuthGuard('jwt'))
-  // @UsePipes(new ValidationPipe())
-  // async updateOne(
-  //   @Body() updateTestResultDto: UpdateTestResultDto,
-  //   @Param() { id },
-  // ): Promise<TestResult> {
-  //   try {
-  //     const updatedTestResult = await this.testResultService.updateOne({
-  //       query: { _id: id },
-  //       updateOneTestResult: updateTestResultDto,
-  //     });
+  @Put(':id')
+  // @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
+  @UseGuards(AuthGuard('jwt'))
+  @UsePipes(new ValidationPipe())
+  async updateOne(
+    @Body() updateTestResultDto: UpdateTestingResultDto,
+    @Param() { id },
+  ): Promise<TestingResult> {
+    try {
+      const updatedTestResult = await this.testingResultService.updateOne({
+        query: { _id: id },
+        updateOneTestingResult: updateTestResultDto,
+      });
 
-  //     return updatedTestResult;
-  //   } catch (error) {
-  //     this.logger.error(`${error.code}:${error.name}:${error.stack}`);
-  //     checkControllerErrors(error);
-  //   }
-  // }
+      return updatedTestResult;
+    } catch (error) {
+      this.logger.error(`${error.code}:${error.name}:${error.stack}`);
+      checkControllerErrors(error);
+    }
+  }
 
   // @Delete(':id')
   // // @UseGuards(new Scopes(['ADMIN', 'DOCTOR', 'PATIENT']))
