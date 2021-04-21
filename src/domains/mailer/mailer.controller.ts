@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { MailerService } from './mailer.service';
 
@@ -7,7 +7,7 @@ import { MailerService } from './mailer.service';
 export class MailerController {
   constructor(private readonly mailerService: MailerService) {}
 
-  @Get('test')
+  @Post('sendToPatient')
   async sendMail(): Promise<any> {
     try {
       await this.mailerService.sendMailToPatient();

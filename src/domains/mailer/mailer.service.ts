@@ -52,8 +52,8 @@ export class MailerService {
       });
 
       const mailOptions = {
-        from: 'tranhuuhongson@gmail.com',
-        to: 'tranhuuhongson+test@gmail.com',
+        from: 'vovanmoithu@gmail.com',
+        to: 'vovanmoithu+abc@gmail.com',
         subject: 'Bác sĩ gởi mail',
         html,
       };
