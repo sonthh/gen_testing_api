@@ -42,19 +42,19 @@ export class MailerService {
     }
   }
 
-  async sendMailToPatient(): Promise<any> {
+  async sendMailToPatient({ user }: any): Promise<any> {
     try {
       const html = await this.getMailTemplate({
         htmlTemplate: mailTemplate,
         replacements: {
-          username: 'ronaldo',
+          username: user.fullname,
         },
       });
 
       const mailOptions = {
         from: 'hoangtuanle2021@gmail.com',
-        to: 'hoangtuanle2021+abc@gmail.com',
-        subject: 'Bác sĩ gởi mail',
+        to: user.email,
+        subject: 'Thông báo kết quả xet nghiệm',
         html,
       };
 

@@ -144,11 +144,32 @@ export class TestingResultService {
         });
       }
 
-      const updated = Object.assign(testingResult, updateOneTestingResult);
+      let result = testingResult.testResult || [];
+
+      if (!result || !result.length) {
+        result.push(updateOneTestingResult.testResult[0]);
+      }
+
+      let isExisted = false;
+
+      result = result.map((item) => {
+        if (item.name == updateOneTestingResult.testResult[0].name) {
+          isExisted = true;
+          return updateOneTestingResult.testResult[0];
+        }
+
+        return item;
+      });
+
+      if (!isExisted) {
+        result.push(updateOneTestingResult.testResult[0]);
+      }
+
+      testingResult.testResult = result;
 
       const updatedTestResult = await this.testingResultModel.findOneAndUpdate(
         query,
-        { $set: updated },
+        { $set: testingResult },
         { upsert: false, new: true },
       );
 

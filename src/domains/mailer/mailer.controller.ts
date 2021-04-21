@@ -1,16 +1,26 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { UsersService } from '../users/users.service';
 import { MailerService } from './mailer.service';
 
 @Controller()
 @ApiTags('mailer')
 export class MailerController {
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(
+    private readonly mailerService: MailerService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post('sendToPatient')
-  async sendMail(): Promise<any> {
+  async sendMail(@Body() { patient }: any): Promise<boolean> {
     try {
-      await this.mailerService.sendMailToPatient();
+      const user = await this.usersService.findOne({
+        query: { _id: patient },
+      });
+
+      await this.mailerService.sendMailToPatient({ user });
+
+      return true;
     } catch (error) {
       console.log(error);
     }

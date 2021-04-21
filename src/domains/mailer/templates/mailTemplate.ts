@@ -14,7 +14,7 @@ export const mailTemplate = `
   <div class="content">
     <div>Xin chào {{username}},</div>
     <br>
-    Bác sĩ gởi mail cho bạn
+    Kết quả xet nghiệm đã có , vui lòng truy cập website để xem kết quả
     <br>
   <div>
 </div>
