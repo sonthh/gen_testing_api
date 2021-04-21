@@ -46,19 +46,19 @@ export const TestResultSchema = new mongoose.Schema({
       },
       type: {
         type: String,
-        required: true,
+        required: false,
       },
       property: {
         type: String,
-        required: true,
+        required: false,
       },
       affect: {
         type: String,
-        required: true,
+        required: false,
       },
       content: {
         type: String,
-        required: true,
+        required: false,
       },
     },
   ],
