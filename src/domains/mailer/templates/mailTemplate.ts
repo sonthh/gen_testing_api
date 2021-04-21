@@ -14,7 +14,7 @@ export const mailTemplate = `
   <div class="content">
     <div>Xin chào {{username}},</div>
     <br>
-    Kết quả xet nghiệm đã có , vui lòng truy cập website để xem kết quả
+    <div class="description">Kết quả xet nghiệm đã có, vui lòng truy cập website để xem kết quả</div>
     <br>
   <div>
 </div>

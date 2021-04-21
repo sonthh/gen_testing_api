@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from '../users/users.service';
 import { MailerService } from './mailer.service';
 
-@Controller()
+@Controller('mailer')
 @ApiTags('mailer')
 export class MailerController {
   constructor(
