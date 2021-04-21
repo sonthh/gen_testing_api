@@ -71,13 +71,11 @@ export interface FindManyTestingResultResponse {
 
 export interface UpdateTestingResultService {
   query: any;
-  updateOneTestResult: UpdateOneTestingResult;
+  updateOneTestingResult: UpdateOneTestingResult;
 }
 
 export interface UpdateOneTestingResult {
-  results?: Result[];
-  recommends?: Recommend[];
-  gens?: Gen[];
+  testResult: TestResult[];
 }
 
 export interface DeleteOneService {
